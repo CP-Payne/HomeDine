@@ -139,3 +139,4 @@ docker-compose.override.yml
 # If you're using EF Core migrations, you usually commit the Migrations folder,
 # but if you have local-only migration scripts or backups:
 # Migrations/*.local.sql
+.fake
