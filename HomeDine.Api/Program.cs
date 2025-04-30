@@ -3,7 +3,7 @@ using HomeDine.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Services.AddApplication().AddInfrastructure();
+    builder.Services.AddApplication().AddInfrastructure(builder.Configuration);
     // Add services to the container.
     builder.Services.AddControllers();
 

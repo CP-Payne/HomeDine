@@ -102,7 +102,6 @@ _ReSharper*/
 # IMPORTANT: Generally keep 'appsettings.json' and 'appsettings.Production.json' (if it doesn't contain secrets).
 # Ignore development settings and user secrets which often contain sensitive data.
 appsettings.Development.json
-appsettings.json
 secrets.json
 *.secrets.json
 *.local.json # Common pattern for local-only settings
