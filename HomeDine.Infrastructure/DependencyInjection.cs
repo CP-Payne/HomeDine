@@ -1,6 +1,8 @@
 using HomeDine.Application.Common.Interfaces.Authentication;
+using HomeDine.Application.Common.Interfaces.Persistence;
 using HomeDine.Application.Common.Interfaces.Services;
 using HomeDine.Infrastructure.Authentication;
+using HomeDine.Infrastructure.Persistence;
 using HomeDine.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +17,11 @@ namespace HomeDine.Infrastructure
         )
         {
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+            services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
     }
