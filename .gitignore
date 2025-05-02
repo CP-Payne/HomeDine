@@ -139,3 +139,7 @@ docker-compose.override.yml
 # but if you have local-only migration scripts or backups:
 # Migrations/*.local.sql
 .fake
+
+
+# Ignore local CSharpier Configuration
+.config
