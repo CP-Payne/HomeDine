@@ -1,10 +1,10 @@
-using System.Diagnostics;
 using ErrorOr;
 using HomeDine.Api.Common.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
+using System.Diagnostics;
 
 namespace HomeDine.Api.Errors
 {

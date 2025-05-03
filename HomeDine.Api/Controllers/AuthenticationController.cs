@@ -1,15 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using ErrorOr;
-using FluentResults;
 using HomeDine.Application.Services.Authentication;
 using HomeDine.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using common = HomeDine.Domain.Common;
 
 namespace HomeDine.Api.Controllers
