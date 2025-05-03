@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HomeDine.Application.Common.Errors;
+using ErrorOr;
+using FluentResults;
 using HomeDine.Application.Common.Interfaces.Authentication;
 using HomeDine.Application.Common.Interfaces.Persistence;
+using HomeDine.Domain.Common;
 using HomeDine.Domain.Entities;
 
 namespace HomeDine.Application.Services.Authentication
@@ -23,7 +25,7 @@ namespace HomeDine.Application.Services.Authentication
             _userRepository = userRepository;
         }
 
-        public AuthenticationResult Register(
+        public ErrorOr<AuthenticationResult> Register(
             string firstName,
             string lastName,
             string email,
@@ -32,7 +34,7 @@ namespace HomeDine.Application.Services.Authentication
         {
             if (_userRepository.GetUserByEmail(email) is not null)
             {
-                throw new DuplicateEmailException();
+                return Errors.User.DuplicateEmail;
             }
 
             var user = new User
@@ -49,16 +51,16 @@ namespace HomeDine.Application.Services.Authentication
             return new AuthenticationResult(user, token);
         }
 
-        public AuthenticationResult Login(string email, string password)
+        public ErrorOr<AuthenticationResult> Login(string email, string password)
         {
             if (_userRepository.GetUserByEmail(email) is not User user)
             {
-                throw new Exception("User with given email does not exist.");
+                return Errors.Authentication.InvalidCredentials;
             }
 
             if (user.Password != password)
             {
-                throw new Exception("Invalid password.");
+                return Errors.Authentication.InvalidCredentials;
             }
 
             var token = _jwtTokenGenerator.GenerateToken(user);
