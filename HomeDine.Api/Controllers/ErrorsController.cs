@@ -10,17 +10,11 @@ namespace HomeDine.Api.Controllers
         public IActionResult Error()
         {
             Exception? exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
-            return Ok();
 
-            // var (statusCode, message) = exception switch
-            // {
-            //     IServiceException serviceException => (
-            //         (int)serviceException.StatusCode,
-            //         serviceException.ErrorMessage
-            //     ),
-            //     _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred."),
-            // };
-            // return Problem(statusCode: statusCode, title: message);
+            return Problem(
+                statusCode: StatusCodes.Status500InternalServerError,
+                title: "An unexpected internal server error occurred."
+            );
         }
     }
 }

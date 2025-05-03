@@ -19,7 +19,7 @@ var app = builder.Build();
         app.MapOpenApi();
     }
 
-    // app.UseExceptionHandler("/error");
+    app.UseExceptionHandler("/error");
     app.UseHttpsRedirection();
 
     app.UseAuthorization();
