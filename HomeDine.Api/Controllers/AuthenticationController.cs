@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using HomeDine.Api.Filters;
 using HomeDine.Application.Services.Authentication;
 using HomeDine.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HomeDine.Application.Common.Errors;
 using HomeDine.Application.Common.Interfaces.Authentication;
 using HomeDine.Application.Common.Interfaces.Persistence;
 using HomeDine.Domain.Entities;
@@ -31,7 +32,7 @@ namespace HomeDine.Application.Services.Authentication
         {
             if (_userRepository.GetUserByEmail(email) is not null)
             {
-                throw new Exception("User with given email already exists.");
+                throw new DuplicateEmailException();
             }
 
             var user = new User
