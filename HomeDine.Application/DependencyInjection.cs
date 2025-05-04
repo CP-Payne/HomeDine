@@ -1,6 +1,4 @@
-using HomeDine.Application.Services.Authentication;
-using HomeDine.Application.Services.Authentication.Commands;
-using HomeDine.Application.Services.Authentication.Queries;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HomeDine.Application
@@ -9,9 +7,7 @@ namespace HomeDine.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddScoped<IAuthenticationCommandService, AuthenticationCommandService>();
-            services.AddScoped<IAuthenticationQueryService, AuthenticationQueryService>();
-
+            services.AddMediatR(typeof(DependencyInjection).Assembly);
             return services;
         }
     }

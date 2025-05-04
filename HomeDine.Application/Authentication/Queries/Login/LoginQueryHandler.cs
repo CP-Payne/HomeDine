@@ -1,17 +1,23 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using ErrorOr;
+using HomeDine.Application.Authentication.Common;
 using HomeDine.Application.Common.Interfaces.Authentication;
 using HomeDine.Application.Common.Interfaces.Persistence;
 using HomeDine.Domain.Common;
 using HomeDine.Domain.Entities;
+using MediatR;
 
-namespace HomeDine.Application.Services.Authentication.Queries
+namespace HomeDine.Application.Authentication.Queries.Login
 {
-    public class AuthenticationQueryService : IAuthenticationQueryService
+    public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
     {
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUserRepository _userRepository;
 
-        public AuthenticationQueryService(
+        public LoginQueryHandler(
             IJwtTokenGenerator jwtTokenGenerator,
             IUserRepository userRepository
         )
@@ -20,14 +26,17 @@ namespace HomeDine.Application.Services.Authentication.Queries
             _userRepository = userRepository;
         }
 
-        public ErrorOr<AuthenticationResult> Login(string email, string password)
+        public async Task<ErrorOr<AuthenticationResult>> Handle(
+            LoginQuery query,
+            CancellationToken cancellationToken
+        )
         {
-            if (_userRepository.GetUserByEmail(email) is not User user)
+            if (_userRepository.GetUserByEmail(query.Email) is not User user)
             {
                 return Errors.Authentication.InvalidCredentials;
             }
 
-            if (user.Password != password)
+            if (user.Password != query.Password)
             {
                 return Errors.Authentication.InvalidCredentials;
             }

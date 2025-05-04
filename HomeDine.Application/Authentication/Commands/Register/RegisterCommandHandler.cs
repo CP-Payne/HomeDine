@@ -1,17 +1,20 @@
 using ErrorOr;
+using HomeDine.Application.Authentication.Common;
 using HomeDine.Application.Common.Interfaces.Authentication;
 using HomeDine.Application.Common.Interfaces.Persistence;
 using HomeDine.Domain.Common;
 using HomeDine.Domain.Entities;
+using MediatR;
 
-namespace HomeDine.Application.Services.Authentication.Commands
+namespace HomeDine.Application.Authentication.Commands.Register
 {
-    public class AuthenticationCommandService : IAuthenticationCommandService
+    public class RegisterCommandHandler
+        : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
     {
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUserRepository _userRepository;
 
-        public AuthenticationCommandService(
+        public RegisterCommandHandler(
             IJwtTokenGenerator jwtTokenGenerator,
             IUserRepository userRepository
         )
@@ -20,24 +23,22 @@ namespace HomeDine.Application.Services.Authentication.Commands
             _userRepository = userRepository;
         }
 
-        public ErrorOr<AuthenticationResult> Register(
-            string firstName,
-            string lastName,
-            string email,
-            string password
+        public async Task<ErrorOr<AuthenticationResult>> Handle(
+            RegisterCommand command,
+            CancellationToken cancellationToken
         )
         {
-            if (_userRepository.GetUserByEmail(email) is not null)
+            if (_userRepository.GetUserByEmail(command.Email) is not null)
             {
                 return Errors.User.DuplicateEmail;
             }
 
             var user = new User
             {
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-                Password = password,
+                FirstName = command.FirstName,
+                LastName = command.LastName,
+                Email = command.Email,
+                Password = command.Password,
             };
             _userRepository.Add(user);
 
