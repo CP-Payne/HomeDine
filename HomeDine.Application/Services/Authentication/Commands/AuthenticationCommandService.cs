@@ -4,14 +4,14 @@ using HomeDine.Application.Common.Interfaces.Persistence;
 using HomeDine.Domain.Common;
 using HomeDine.Domain.Entities;
 
-namespace HomeDine.Application.Services.Authentication
+namespace HomeDine.Application.Services.Authentication.Commands
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationCommandService : IAuthenticationCommandService
     {
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUserRepository _userRepository;
 
-        public AuthenticationService(
+        public AuthenticationCommandService(
             IJwtTokenGenerator jwtTokenGenerator,
             IUserRepository userRepository
         )
@@ -43,22 +43,6 @@ namespace HomeDine.Application.Services.Authentication
 
             var token = _jwtTokenGenerator.GenerateToken(user);
 
-            return new AuthenticationResult(user, token);
-        }
-
-        public ErrorOr<AuthenticationResult> Login(string email, string password)
-        {
-            if (_userRepository.GetUserByEmail(email) is not User user)
-            {
-                return Errors.Authentication.InvalidCredentials;
-            }
-
-            if (user.Password != password)
-            {
-                return Errors.Authentication.InvalidCredentials;
-            }
-
-            var token = _jwtTokenGenerator.GenerateToken(user);
             return new AuthenticationResult(user, token);
         }
     }

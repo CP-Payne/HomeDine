@@ -1,8 +1,10 @@
 using ErrorOr;
 using HomeDine.Application.Services.Authentication;
+using HomeDine.Application.Services.Authentication.Commands;
+using HomeDine.Application.Services.Authentication.Queries;
 using HomeDine.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using common = HomeDine.Domain.Common;
+using commonUtils = HomeDine.Domain.Common;
 
 namespace HomeDine.Api.Controllers
 {
@@ -10,17 +12,22 @@ namespace HomeDine.Api.Controllers
     // [ErrorHandlingFilter]
     public class AuthenticationController : ApiController
     {
-        private readonly IAuthenticationService _authenticationService;
+        private readonly IAuthenticationCommandService _authenticationCommandService;
+        private readonly IAuthenticationQueryService _authenticationQueryService;
 
-        public AuthenticationController(IAuthenticationService authenticationService)
+        public AuthenticationController(
+            IAuthenticationCommandService authenticationCommandService,
+            IAuthenticationQueryService authenticationQueryService
+        )
         {
-            _authenticationService = authenticationService;
+            _authenticationCommandService = authenticationCommandService;
+            _authenticationQueryService = authenticationQueryService;
         }
 
         [HttpPost("register")]
         public IActionResult Register(RegisterRequest request)
         {
-            ErrorOr<AuthenticationResult> authResult = _authenticationService.Register(
+            ErrorOr<AuthenticationResult> authResult = _authenticationCommandService.Register(
                 request.FirstName,
                 request.LastName,
                 request.Email,
@@ -47,10 +54,10 @@ namespace HomeDine.Api.Controllers
         [HttpPost("login")]
         public IActionResult Login(LoginRequest request)
         {
-            var authResult = _authenticationService.Login(request.Email, request.Password);
+            var authResult = _authenticationQueryService.Login(request.Email, request.Password);
             if (
                 authResult.IsError
-                && authResult.FirstError == common.Errors.Authentication.InvalidCredentials
+                && authResult.FirstError == commonUtils.Errors.Authentication.InvalidCredentials
             )
             {
                 return Problem(

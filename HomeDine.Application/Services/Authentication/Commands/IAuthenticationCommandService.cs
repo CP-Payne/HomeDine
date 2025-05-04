@@ -1,8 +1,8 @@
 using ErrorOr;
 
-namespace HomeDine.Application.Services.Authentication
+namespace HomeDine.Application.Services.Authentication.Commands
 {
-    public interface IAuthenticationService
+    public interface IAuthenticationCommandService
     {
         ErrorOr<AuthenticationResult> Register(
             string firstName,
@@ -10,6 +10,5 @@ namespace HomeDine.Application.Services.Authentication
             string email,
             string password
         );
-        ErrorOr<AuthenticationResult> Login(string email, string password);
     }
 }
