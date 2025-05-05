@@ -5,12 +5,14 @@ using HomeDine.Application.Authentication.Queries.Login;
 using HomeDine.Contracts.Authentication;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using commonUtils = HomeDine.Domain.Common;
 
 namespace HomeDine.Api.Controllers
 {
     [Route("auth")]
+    [AllowAnonymous]
     public class AuthenticationController : ApiController
     {
         private readonly ISender _mediator;

@@ -1,0 +1,6 @@
+@host = http://localhost:5002
+
+
+GET {{host}}/dinners
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiYzkzYTFlNy05YTNjLTQ2NTgtYTFkNy00ZjM1Yzc2NjgzZTMiLCJqdGkiOiIzNTdmNTY3MC01OTEzLTRjODUtYTM0MS1kM2E2NzU3YWQ3MzAiLCJnaXZlbl9uYW1lIjoiSm9obiIsImZhbWlseV9uYW1lIjoiRG9lIiwiZXhwIjoxNzQ2NDc0NzY2LCJpc3MiOiJIb21lRGluZSIsImF1ZCI6IkhvbWVEaW5lIn0.3GwwcvdDaDUnJVrhzaQK4oKCn1u0IIF1KWGloay_EGg
