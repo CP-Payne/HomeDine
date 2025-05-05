@@ -1,3 +1,4 @@
+using HomeDine.Api;
 using HomeDine.Api.Errors;
 using HomeDine.Application;
 using HomeDine.Infrastructure;
@@ -5,11 +6,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Services.AddApplication().AddInfrastructure(builder.Configuration);
-    builder.Services.AddControllers();
-    builder.Services.AddSingleton<ProblemDetailsFactory, HomeDineProblemDetailsFactory>();
-
-    builder.Services.AddOpenApi();
+    builder.Services.AddPresentation().AddApplication().AddInfrastructure(builder.Configuration);
 }
 
 var app = builder.Build();

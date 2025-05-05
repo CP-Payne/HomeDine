@@ -3,6 +3,7 @@ using HomeDine.Application.Authentication.Commands.Register;
 using HomeDine.Application.Authentication.Common;
 using HomeDine.Application.Authentication.Queries.Login;
 using HomeDine.Contracts.Authentication;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using commonUtils = HomeDine.Domain.Common;
@@ -10,54 +11,33 @@ using commonUtils = HomeDine.Domain.Common;
 namespace HomeDine.Api.Controllers
 {
     [Route("auth")]
-    // [ErrorHandlingFilter]
     public class AuthenticationController : ApiController
     {
         private readonly ISender _mediator;
+        private readonly IMapper _mapper;
 
-        public AuthenticationController(ISender mediator)
+        public AuthenticationController(ISender mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync(RegisterRequest request)
         {
-            var command = new RegisterCommand(
-                request.FirstName,
-                request.LastName,
-                request.Email,
-                request.Password
-            );
+            var command = _mapper.Map<RegisterCommand>(request);
             ErrorOr<AuthenticationResult> authResult = await _mediator.Send(command);
-            // ErrorOr<AuthenticationResult> authResult = _authenticationCommandService.Register(
-            //     request.FirstName,
-            //     request.LastName,
-            //     request.Email,
-            //     request.Password
-            // );
 
             return authResult.Match(
-                authResult => Ok(MapAuthResult(authResult)),
+                authResult => Ok(_mapper.Map<AuthenticationResponse>(authResult)),
                 errors => Problem(errors)
-            );
-        }
-
-        private static AuthenticationResponse MapAuthResult(AuthenticationResult authResult)
-        {
-            return new AuthenticationResponse(
-                authResult.user.Id,
-                authResult.user.FirstName,
-                authResult.user.LastName,
-                authResult.user.Email,
-                authResult.Token
             );
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync(LoginRequest request)
         {
-            var query = new LoginQuery(request.Email, request.Password);
+            var query = _mapper.Map<LoginQuery>(request);
             var authResult = await _mediator.Send(query);
             if (
                 authResult.IsError
@@ -71,7 +51,7 @@ namespace HomeDine.Api.Controllers
             }
 
             return authResult.Match(
-                authResult => Ok(MapAuthResult(authResult)),
+                authResult => Ok(_mapper.Map<AuthenticationResponse>(authResult)),
                 errors => Problem(errors)
             );
         }

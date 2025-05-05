@@ -31,6 +31,7 @@ namespace HomeDine.Application.Authentication.Queries.Login
             CancellationToken cancellationToken
         )
         {
+            await Task.CompletedTask;
             if (_userRepository.GetUserByEmail(query.Email) is not User user)
             {
                 return Errors.Authentication.InvalidCredentials;
